@@ -8,11 +8,13 @@ package bat15.restful.requests;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
+
+//bat15.restful.requests.ApplicationConfig
 /**
  *
  * @author Павел
  */
-@javax.ws.rs.ApplicationPath("repository")
+@javax.ws.rs.ApplicationPath("/models")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -21,7 +23,7 @@ public class ApplicationConfig extends Application {
         addRestResourceClasses(resources);
         return resources;
     }
-
+    
     /**
      * Do not modify addRestResourceClasses() method.
      * It is automatically populated with

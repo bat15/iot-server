@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bat15.restful</groupId>
-    <artifactId>RestfulWebService</artifactId>
+    <artifactId>iot-server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>RestfulWebService</name>
+    <name>iot-server</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -26,6 +26,12 @@
                     
                     
     <dependencies>
+            
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.0</version>
+        </dependency>         
         <!-- JAX-RS -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
