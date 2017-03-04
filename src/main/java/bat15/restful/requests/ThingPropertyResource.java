@@ -6,8 +6,25 @@
 package bat15.restful.requests;
 
 import bat15.restful.process.ThingPropertyProcessor;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.BeanParam;
@@ -27,6 +44,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Request;
 
 /**
  *
@@ -34,6 +52,9 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("/")
 public class ThingPropertyResource {
+    
+    @Resource(lookup = "iot-server")
+    private Properties properties;
     
     @Context
     private UriInfo context;
@@ -48,6 +69,8 @@ public class ThingPropertyResource {
      * Creates a new instance of RestResource
      */
     public ThingPropertyResource() {
+        
+        
     }
 
     /**
@@ -83,8 +106,52 @@ public class ThingPropertyResource {
                 
         return proc.getNoModel();
     }
+
+    @GET
+    @Path("/get_test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getTestModelJson(@Context UriInfo uriInfo, @QueryParam("json") String jsonType) {
+//        return new WsObject("examp.ru","/usrl/fhsj", (new Date()).getTime());
+             
+        String config_path = properties.getProperty("config_path"); //"/home/glassfish/glassfish4/glassfish/domains/domain1/config/test_model.json";
+        String filePath = config_path + "/test_model.json";
+        StringBuilder strBuilder = new StringBuilder();
+        // 
+	try {
+		File fileDir = new File(filePath);
+
+		BufferedReader in = new BufferedReader(
+		   new InputStreamReader(
+                      new FileInputStream(fileDir), "UTF8"));
+
+		String str;
+
+		while ((str = in.readLine()) != null) {
+		    //System.out.println(str);
+                    strBuilder.append(str);
+		}
+
+                in.close();
+	    }
+	    catch (UnsupportedEncodingException e)
+	    {
+                System.out.println(e.getMessage());
+	    }
+	    catch (IOException e)
+	    {
+                System.out.println(e.getMessage());
+	    }
+	    catch (Exception e)
+	    {
+                System.out.println(e.getMessage());
+	    }
+        
+        return strBuilder.toString();
+    }
     
     
+    
+    //getServletContext().getRealPath("/") +"configs/test_model.json";
     
 //    @GET
 //    @Path("{path:}")
@@ -106,6 +173,10 @@ public class ThingPropertyResource {
         //ui.getBaseUri();
         return proc.getModel(modelQuery);
     }
+    
+    
+    
+
 
     
 //    @GET
@@ -138,8 +209,27 @@ public class ThingPropertyResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String data) {
-        proc.putPropertyValue(data);
+    public void putJson(JsonObject snapshot) {
+        
+        
+//        JsonArray models = snapshot.getJsonArray("Models");
+//        
+//        for(JsonValue model: models)
+//        {
+//            
+//            
+//            
+//        }
+//        
+//        
+//	List<JsonObject> matchingItems = new ArrayList<JsonObject>();
+//	for (JsonObject item : candidates.getValuesAs(JsonObject.class)) {
+//		JsonArray titles = item.getJsonArray("title");
+//
+//                
+//	}
+//        
+//        proc.putPropertyValue(data);
     } 
     
     
